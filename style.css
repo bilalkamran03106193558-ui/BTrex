@@ -1,0 +1,164 @@
+/* General Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  margin: 0;
+  background: #181818;
+  color: #fff;
+  text-align: center;
+}
+
+h1, h2, h3 {
+  margin: 10px 0;
+}
+
+/* Banner */
+header {
+  position: relative;
+}
+
+.banner {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.channel-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -45px;
+  flex-direction: column;
+}
+
+.logo {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  margin-bottom: 8px;
+  background: #000;
+}
+
+.channel-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Cards */
+.card {
+  background: #202020;
+  padding: 20px;
+  margin: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* Stats */
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.stat-box {
+  background: #292929;
+  padding: 15px;
+  border-radius: 10px;
+  width: 45%;
+  transition: transform 0.3s;
+}
+
+.stat-box:hover {
+  transform: scale(1.05);
+}
+
+.stat-box h3 {
+  color: #ff4b4b;
+  margin-bottom: 5px;
+}
+
+.stat-box p {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Shorts */
+#shorts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 15px;
+}
+
+#shorts-container iframe {
+  width: 100%;
+  border-radius: 10px;
+  aspect-ratio: 9 / 16;
+  border: none;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+  transition: transform 0.3s;
+}
+
+#shorts-container iframe:hover {
+  transform: scale(1.03);
+}
+
+/* Footer */
+footer {
+  margin-top: 20px;
+  padding: 10px;
+  background: #111;
+  font-size: 14px;
+}
+
+footer a {
+  color: #ff4b4b;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  margin-top: 20px;
+  padding: 15px;
+  background: #111;
+  font-size: 14px;
+  text-align: center;
+}
+
+footer a {
+  color: #ff4b4b;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Discord Footer */
+.discord-footer {
+  margin-top: 10px;
+}
+
+.discord-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #7289da; /* Discord blue */
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.discord-footer a:hover {
+  color: #5b6eae;
+}
+
+.discord-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
