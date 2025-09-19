@@ -3,74 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BTrexOP</title>
+  <title>BTrex</title>
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- Google AdSense Auto Ads -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXX"
-     crossorigin="anonymous"></script>
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Banner -->
+
+  <!-- MATRIX BACKGROUND -->
+  <canvas id="matrix-bg"></canvas>
+
+  <!-- HEADER -->
   <header>
-    <img src="banner.jpg" alt="Channel Banner" class="banner">
-    <div class="channel-info">
-      <img src="logo.jpg" alt="Channel Logo" class="logo">
-      <h1 class="channel-title">My YouTube Channel</h1>
-    </div>
+    <img class="logo" src="logo.png" alt="BTrex Logo">
+    <h1 class="glow">BTrex</h1>
   </header>
 
-  <!-- Live Stats -->
-  <section class="stats card">
-    <h2>📊 Channel Stats</h2>
-    <div class="stats-grid">
-      <div class="stat-box">
-        <h3>Subscribers</h3>
-        <p id="subscribers">Loading...</p>
-      </div>
-      <div class="stat-box">
-        <h3>Total Views</h3>
-        <p id="views">Loading...</p>
-      </div>
+  <!-- CHANNEL STATS -->
+  <div class="stats">
+    <div class="stat-card" id="subs">
+      <i class="fas fa-user"></i>
+      <span>0</span>
+      <p>Subscribers</p>
+    </div>
+    <div class="stat-card" id="views">
+      <i class="fas fa-eye"></i>
+      <span>0</span>
+      <p>Total Views</p>
+    </div>
+    <div class="stat-card" id="likes">
+      <i class="fas fa-thumbs-up"></i>
+      <span>0</span>
+      <p>Total Videos</p>
+    </div>
+    <div class="stat-card" id="since">
+      <i class="fas fa-calendar-alt"></i>
+      <span>0</span>
+      <p>Since</p>
+    </div>
+  </div>
+
+  <!-- MOST POPULAR VIDEOS -->
+  <section>
+    <h2 class="glow">Most Popular</h2>
+    <div class="video-list" id="popular-videos"></div>
+  </section>
+
+  <!-- RECENT VIDEOS -->
+  <section>
+    <h2 class="glow">Recent Videos</h2>
+    <div class="video-list" id="recent-videos"></div>
+    <div class="center-btn">
+      <button id="toggleShortsBtn">See More</button>
     </div>
   </section>
 
-  <!-- Shorts Section -->
-  <section class="shorts card">
-    <h2>🎬 Latest Shorts</h2>
-    <div id="shorts-container"></div>
-  </section>
-
-  <!-- Example Ad Unit (Optional, controlled placement) -->
-  <section class="ads-section card">
-    <h2>Sponsored</h2>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-XXXX"
-         data-ad-slot="1234567890"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </section>
-
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
-    <p>
-      Made with ❤️ for 
-      <a href="https://www.youtube.com/channel/UCEpyuVT33uWVKPfnGkUCqjw" target="_blank">
-        My YouTube Channel
+    <div class="footer-links">
+      <a href="https://www.youtube.com/channel/UCEpyuVT33uWVKPfnGkUCqjw" target="_blank" class="yt-link">
+        <i class="fab fa-youtube"></i> Visit My Channel
       </a>
-    </p>
-    <div class="discord-footer">
-      <a href="https://discord.gg/fmAQR5GSP7" target="_blank">
-        <img src="discord-logo.png" alt="Discord Server" class="discord-logo">
-        Join our Discord
+      <a href="https://discord.gg/YOUR_DISCORD_LINK" target="_blank" class="discord-link">
+        <i class="fab fa-discord"></i> Join Discord
       </a>
     </div>
+    <div class="community">Made with Btrex Community</div>
   </footer>
 
+  <!-- JS -->
   <script src="script.js"></script>
 </body>
 </html>
