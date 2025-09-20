@@ -33,34 +33,64 @@ window.addEventListener('resize', () => {
 const API_KEY = 'AIzaSyCX3IAYHG-sVIypL-U3czYbSyHKcxqJhkU';
 const CHANNEL_ID = 'UCEpyuVT33uWVKPfnGkUCqjw';
 
+// ================= Fetch Channel Stats =================
 async function fetchChannelStats() {
-    const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${CHANNEL_ID}&key=${API_KEY}`;
+    const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,contentDetails&id=${CHANNEL_ID}&key=${API_KEY}`;
     const res = await fetch(url);
     const data = await res.json();
     const channel = data.items[0];
 
     document.getElementById('subs').querySelector('span').textContent = Number(channel.statistics.subscriberCount).toLocaleString();
     document.getElementById('views').querySelector('span').textContent = Number(channel.statistics.viewCount).toLocaleString();
-    document.getElementById('likes').querySelector('span').textContent = Number(channel.statistics.videoCount).toLocaleString();
-    const sinceDate = new Date(channel.snippet.publishedAt).toLocaleDateString();
-    document.getElementById('since').querySelector('span').textContent = sinceDate;
+    document.getElementById('since').querySelector('span').textContent = new Date(channel.snippet.publishedAt).toLocaleDateString();
+    document.getElementById('videos').querySelector('span').textContent = Number(channel.statistics.videoCount).toLocaleString();
+
+    // Fetch total likes from uploads playlist
+    const uploadsPlaylist = channel.contentDetails.relatedPlaylists.uploads;
+    const totalLikes = await fetchTotalLikes(uploadsPlaylist);
+    document.getElementById('likes').querySelector('span').textContent = totalLikes.toLocaleString();
+}
+
+// ================= Fetch Total Likes =================
+async function fetchTotalLikes(playlistId) {
+    let totalLikes = 0;
+    let nextPage = '';
+    do {
+        const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${playlistId}&maxResults=50&pageToken=${nextPage}&key=${API_KEY}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const videoIds = data.items.map(item => item.contentDetails.videoId).join(',');
+
+        // Fetch likes for batch
+        if(videoIds.length > 0){
+            const statsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${API_KEY}`;
+            const statsRes = await fetch(statsUrl);
+            const statsData = await statsRes.json();
+            statsData.items.forEach(v => {
+                if(v.statistics.likeCount) totalLikes += parseInt(v.statistics.likeCount);
+            });
+        }
+        nextPage = data.nextPageToken || '';
+    } while(nextPage);
+
+    return totalLikes;
 }
 
 // ================= Fetch Videos =================
 let recentVideos = [];
 let popularVideos = [];
-const maxRecent = 5; // default visible
+const maxRecent = 4; // visible
 let showAllRecent = false;
 
 async function fetchVideos() {
     // Recent Videos
-    const recentURL = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=10`;
+    const recentURL = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=12`;
     const resRecent = await fetch(recentURL);
     const dataRecent = await resRecent.json();
     recentVideos = dataRecent.items;
 
     // Most Popular Videos
-    const popularURL = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=viewCount&maxResults=5`;
+    const popularURL = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=viewCount&maxResults=4`;
     const resPopular = await fetch(popularURL);
     const dataPopular = await resPopular.json();
     popularVideos = dataPopular.items;
@@ -70,10 +100,10 @@ async function fetchVideos() {
 
 // ================= Render Video Cards =================
 function renderVideos() {
+    // Recent Videos
     const recentContainer = document.getElementById('recent-videos');
     recentContainer.innerHTML = '';
-
-    const videosToShow = showAllRecent ? recentVideos : recentVideos.slice(0, maxRecent);
+    const videosToShow = showAllRecent ? recentVideos.slice(0,12) : recentVideos.slice(0,maxRecent);
 
     videosToShow.forEach(video => {
         const videoId = video.id.videoId;
@@ -92,16 +122,17 @@ function renderVideos() {
         });
         recentContainer.appendChild(card);
 
-        // Fetch view count for each video
+        // Fetch views
         fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${API_KEY}`)
             .then(r => r.json())
             .then(d => {
                 const views = Number(d.items[0].statistics.viewCount).toLocaleString();
                 card.querySelector('span').textContent = `Views: ${views}`;
+                card.querySelector('span').style.fontWeight = 'bold';
             });
     });
 
-    // Most Popular
+    // Popular Videos
     const popularContainer = document.getElementById('popular-videos');
     popularContainer.innerHTML = '';
     popularVideos.forEach(video => {
@@ -121,12 +152,13 @@ function renderVideos() {
         });
         popularContainer.appendChild(card);
 
-        // Fetch view count
+        // Fetch views
         fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${API_KEY}`)
             .then(r => r.json())
             .then(d => {
                 const views = Number(d.items[0].statistics.viewCount).toLocaleString();
                 card.querySelector('span').textContent = `Views: ${views}`;
+                card.querySelector('span').style.fontWeight = 'bold';
             });
     });
 }
